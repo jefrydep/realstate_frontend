@@ -44,7 +44,7 @@ const projects = [
 ];
 
 async function getData() {
-  const res = await fetch("http://localhost:3000/api/project/findAll");
+  const res = await fetch("http://localhost:3000/api/project/findAll",{next:{revalidate:1}});
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");

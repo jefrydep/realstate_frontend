@@ -29,7 +29,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { LogOut, User } from "lucide-react";
@@ -49,9 +49,7 @@ const CustomDropDown = () => {
         <Avatar className="cursor-pointer mr-2 ml-4">
           {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
           <AvatarFallback className="dark:bg-white  ">
-            <span className="dark:text-black font-bold">
-              JP
-            </span>
+            <span className="dark:text-black font-bold">JP</span>
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -107,9 +105,14 @@ const CustomDropDown = () => {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel onClick={() => setIsOpenDialog(false)}>
+                <Button
+                  onClick={() => setIsOpenDialog(false)}
+                  type="button"
+                  variant={"destructive"}
+                >
                   Cancelar
-                </AlertDialogCancel>
+                </Button>
+
                 <AlertDialogAction
                   onClick={async () => {
                     await signOut();
