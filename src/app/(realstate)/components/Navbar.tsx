@@ -1,20 +1,13 @@
 import { ModeToggle } from "@/components/togle-mode/ModeToggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { getServerSession } from "next-auth";
 
+import { getServerSession } from "next-auth";
+import CustomDropDown from "./CustomDropDown";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 const Navbar = async () => {
   const dataUser = await getServerSession();
 
@@ -32,73 +25,36 @@ const Navbar = async () => {
 
               <span className="self-center whitespace-nowrap ml-2">
                 {" "}
-                Palomino
+                Inmobiliaria Palomino
               </span>
             </a>
           </div>
           <div className="flex items-center ">
             {/* User Avatar */}
-            <div><ModeToggle/></div>
-            <h5 className="mr-2">{dataUser?.user.name}</h5>
-            <DropdownMenu modal={false}>
-              <DropdownMenuTrigger asChild>
-                <div className="bg-blue-500 cursor-pointer  text-white p-2 rounded-full w-12 h-12 flex items-center justify-center ">
-                  JP
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 ">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    Profile
-                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Billing
-                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Settings
-                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Keyboard shortcuts
-                    <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>
-                      Invite users
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem>Email</DropdownMenuItem>
-                        <DropdownMenuItem>Message</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>More...</DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-                  <DropdownMenuItem>
-                    New Team
-                    <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>GitHub</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuItem disabled>API</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  Log out
-                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger  >
+                <ModeToggle />
+                </TooltipTrigger>
+                <TooltipContent  >
+                  <p>Cambiar Tema</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            </div>
+            {/* <h5 className="mr-2">{dataUser?.user.name}</h5> */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <CustomDropDown />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Perfil y Configuración</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </div>

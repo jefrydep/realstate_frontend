@@ -20,9 +20,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
- 
+
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import * as Yup from "yup";
+const validationSchema = Yup.object().shape({
+  documentNumber: Yup.string()
+    .min(8, "Minimo 8 digitos")
+    .max(8, "Maximo 8 digitos")
+    .required("Dni es requerido"),
+  password: Yup.string().required("Contraseña es requerida"),
+});
 interface valuesLogin {
   documentNumber: string;
 
@@ -55,10 +63,10 @@ export const LoginForm = () => {
 
         setIsLoading(false);
         toast({
-          variant:"destructive",
-          title:"¡Credenciales Incorrectas!",
+          variant: "destructive",
+          title: "¡Credenciales Incorrectas!",
           description: "Vuelva a ingresar sus credenciales",
-          content:"Vuelva a ingresar sus contraseñas" 
+          content: "Vuelva a ingresar sus contraseñas",
         });
         // Swal.fire({
         //   confirmButtonColor: "#01DFD7",
@@ -88,7 +96,7 @@ export const LoginForm = () => {
         <div className="text-center">
           <h3 className="text-lg font-bold mb-4">¡Bienvenidos!</h3>
           <h4>
-            <b>Inicio de sesion</b>
+            <b>Inicio de sesión</b>
           </h4>
         </div>
 
@@ -100,6 +108,7 @@ export const LoginForm = () => {
           }}
           onSubmit={onLogin}
           className=""
+          validationSchema={validationSchema}
         >
           <Form>
             <CustomInput
@@ -107,7 +116,7 @@ export const LoginForm = () => {
               name="documentNumber"
               icon={<User />}
               label={"Usuario"}
-              placeholder="Ingresa tu nombre de ususario"
+              placeholder="Ingresa tu Dni"
             />
             <CustomInput
               type="password"
@@ -119,21 +128,24 @@ export const LoginForm = () => {
             {/* <CustomInput type="text"  name="user"/> */}
             {/* <CustomInput type="text"  name="password"/> */}
             <div className="">
-              <Button disabled={IsLoading} type="submit" className="w-full mt-7">
+              <Button
+                disabled={IsLoading}
+                type="submit"
+                className="w-full mt-7"
+              >
                 {!IsLoading ? (
-                  <span>Insiciar sesion</span>
+                  <span>Iniciar sesión</span>
                 ) : (
                   <span>
                     <SyncLoader size={10} color="white" />
                   </span>
-                )}
+                )}      
               </Button>
             </div>
-           
           </Form>
         </Formik>
       </div>
-      
+
       <Toaster />
     </div>
   );

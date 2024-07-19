@@ -10,7 +10,7 @@ export const Navbar = () => {
             <span className="sm:block hidden text-sm"> Software Developer</span>
             </p>
           </div>
-          <p className="text-white">INMOVILIARIA PALOMINO</p>
+          <p className="text-white">INMOBILIARIA PALOMINO</p>
         </div>
       </nav>
     )

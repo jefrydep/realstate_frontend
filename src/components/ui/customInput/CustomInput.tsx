@@ -2,7 +2,7 @@
 import { Label } from "../label";
 import { Input } from "../input";
 import { User } from "lucide-react";
-import { Field } from "formik";
+import { ErrorMessage, Field } from "formik";
 
 interface Props {
   icon: React.ReactNode;
@@ -12,15 +12,20 @@ interface Props {
   name: string;
 }
 
-export const CustomInput = ({ label, icon, placeholder, name,type }: Props) => {
+export const CustomInput = ({
+  label,
+  icon,
+  placeholder,
+  name,
+  type,
+}: Props) => {
   return (
     <div className=" mb-4 ">
-      <Label className=" " htmlFor="email">
+      <Label className="  "  >
         {label}
       </Label>
       <div className="relative mt-2">
         <Field
-        
           type={type}
           as={Input}
           name={name}
@@ -30,8 +35,14 @@ export const CustomInput = ({ label, icon, placeholder, name,type }: Props) => {
         <span className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
           {icon}
         </span>
+        
         {/* <Input/> */}
       </div>
+      <ErrorMessage
+          name={name}
+          component="div"
+          className="text-red-400  text-sm"
+        />
     </div>
   );
 };
