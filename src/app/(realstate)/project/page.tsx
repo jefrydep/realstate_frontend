@@ -6,10 +6,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import CustomCard from "../components/CustomCard";
+ 
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CreateProjectForm from "./components/CreateProjectForm";
+import ProjectGrid from "./components/ProjectGrid";
 
 // import CreateProjectForm from "./components/CreateProjectForm";
 const projects = [
@@ -44,7 +45,7 @@ const projects = [
 ];
 
 async function getData() {
-  const res = await fetch("http://localhost:3000/api/project/findAll",{next:{revalidate:1}});
+  const res = await fetch("http://localhost:3000/api/project/findAll",{cache:"no-cache"});
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error("Failed to fetch data");
@@ -58,24 +59,8 @@ export default async function ProjectPage() {
 
   return (
     <>
-     
-     
-        <CreateProjectForm />
-   
-
-      <div className="flex flex-col  sm:grid  sm:grid-cols-2 lg:grid-cols-3 ">
-        {data.map((data: any, index: number) => (
-          <div className="flex justify-center  " key={index}>
-            <CustomCard
-              description={data.description}
-              title={data.nameProject}
-              availableLots={data.availableLots}
-              soldLots={data.soldLots}
-              totalLots={data.totalLots}
-            />
-          </div>
-        ))}
-      </div>
+      <CreateProjectForm />
+      <ProjectGrid projects={data} />
     </>
   );
 }

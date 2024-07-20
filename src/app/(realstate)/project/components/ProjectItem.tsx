@@ -17,7 +17,7 @@ interface Props {
   availableLots: number;
   soldLots: number;
 }
-const CustomCard = ({
+const ProjectItem = ({
   title,
   description,
   totalLots,
@@ -62,4 +62,4 @@ const CustomCard = ({
   );
 };
 
-export default CustomCard;
+export default ProjectItem;

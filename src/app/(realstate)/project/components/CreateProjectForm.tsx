@@ -37,6 +37,7 @@ import {
 import { useState } from "react";
 import { Description } from "@radix-ui/react-toast";
 import { createProject } from "../services/project";
+import { useRouter } from "next/navigation";
 const validationSchema = Yup.object().shape({
   nameProject: Yup.string()
 
@@ -56,6 +57,9 @@ interface valuesLogin {
   status: string;
 }
 const CreateProjectForm = () => {
+  const router = useRouter();
+ 
+
   const onLogin = async (
     { nameProject, location, aream2, description, status }: valuesLogin,
     actions: FormikHelpers<valuesLogin>
@@ -69,6 +73,8 @@ const CreateProjectForm = () => {
         location,
         status,
       });
+      router.refresh();
+      setIsOpenDialog(false)
       console.log(createNewProject);
     } catch (error) {
       console.log(error);
@@ -122,6 +128,7 @@ const CreateProjectForm = () => {
           <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
             <Plus />
           </Button>
+
 
           {/* <TooltipProvider>
             <Tooltip>
