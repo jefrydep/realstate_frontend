@@ -123,7 +123,7 @@ const CreateProjectForm = () => {
   };
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   return (
-    <div>
+    
       <Dialog open={isOpenDialog} modal={true}>
         {/* <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
             <Plus />
@@ -247,7 +247,7 @@ const CreateProjectForm = () => {
           </div> */}
         </DialogContent>
       </Dialog>
-    </div>
+    
   );
 };
 
