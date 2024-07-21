@@ -38,6 +38,7 @@ import { useState } from "react";
 import { Description } from "@radix-ui/react-toast";
 import { createProject } from "../services/project";
 import { useRouter } from "next/navigation";
+
 const validationSchema = Yup.object().shape({
   nameProject: Yup.string()
 
@@ -48,6 +49,7 @@ const validationSchema = Yup.object().shape({
   Description: Yup.string().optional(),
   status: Yup.string().required("Campo requerido"),
 });
+
 interface valuesLogin {
   nameProject: string;
 
@@ -58,7 +60,6 @@ interface valuesLogin {
 }
 const CreateProjectForm = () => {
   const router = useRouter();
- 
 
   const onLogin = async (
     { nameProject, location, aream2, description, status }: valuesLogin,
@@ -74,7 +75,7 @@ const CreateProjectForm = () => {
         status,
       });
       router.refresh();
-      setIsOpenDialog(false)
+      setIsOpenDialog(false);
       console.log(createNewProject);
     } catch (error) {
       console.log(error);
@@ -124,25 +125,27 @@ const CreateProjectForm = () => {
   return (
     <div>
       <Dialog open={isOpenDialog} modal={true}>
-        <DialogTrigger asChild>
-          <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
+        {/* <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
             <Plus />
-          </Button>
+            </Button> */}
 
-
-          {/* <TooltipProvider>
-            <Tooltip>
-            <TooltipTrigger>
-            <Button className="ml-4">
-            <Plus />
-            </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DialogTrigger asChild>
+                {/* <div>
+                  
+                  </div> */}
+                <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
+                  <Plus onClick={() => setIsOpenDialog(true)} />
+                </Button>
+              </DialogTrigger>
             </TooltipTrigger>
             <TooltipContent>
-            <p>Agregar Proyectos</p>
+              <p>Agregar Proyectos</p>
             </TooltipContent>
-            </Tooltip>
-            </TooltipProvider> */}
-        </DialogTrigger>
+          </Tooltip>
+        </TooltipProvider>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Crear Proyecto</DialogTitle>

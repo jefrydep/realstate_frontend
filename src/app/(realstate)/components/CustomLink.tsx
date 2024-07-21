@@ -13,7 +13,7 @@ const links = [
 const CustomLink = () => {
 
     const pathName =  usePathname()
-    console.log(pathName)
+ 
   return (
     <>
       {links.map((link: any) => (

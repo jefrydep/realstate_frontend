@@ -12,38 +12,8 @@ import { Button } from "@/components/ui/button";
 import CreateProjectForm from "./components/CreateProjectForm";
 import ProjectGrid from "./components/ProjectGrid";
 
-// import CreateProjectForm from "./components/CreateProjectForm";
-const projects = [
-  {
-    title: "Tariachi",
-    description: "Tariachi , Proyecto ubicado en la salida el Cusco",
-  },
-  {
-    title: "Tariachi",
-    description: "Tariachi , Proyecto ubicado en la salida el Cusco",
-  },
-  {
-    title: "Tariachi",
-    description: "Tariachi , Proyecto ubicado en la salida el Cusco",
-  },
-  {
-    title: "Tariachi",
-    description: "Tariachi , Proyecto ubicado en la salida el Cusco",
-  },
-  {
-    title: "Tariachi",
-    description: "Tariachi , Proyecto ubicado en la salida el Cusco",
-  },
-  {
-    title: "Tariachi",
-    description: "Tariachi , Proyecto ubicado en la salida el Cusco",
-  },
-  {
-    title: "Tariachi",
-    description: "Tariachi , Proyecto ubicado en la salida el Cusco",
-  },
-];
-
+ 
+ 
 async function getData() {
   const res = await fetch("http://localhost:3000/api/project/findAll",{cache:"no-cache"});
   if (!res.ok) {
@@ -55,10 +25,11 @@ async function getData() {
 }
 export default async function ProjectPage() {
   const data = await getData();
-  console.log(data);
+ 
 
   return (
     <>
+ 
       <CreateProjectForm />
       <ProjectGrid projects={data} />
     </>

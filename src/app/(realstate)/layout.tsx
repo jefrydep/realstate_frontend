@@ -1,3 +1,4 @@
+ 
 import Link from "next/link";
 import { FaHouse } from "react-icons/fa6";
 import CustomLink from "./components/CustomLink";
@@ -56,7 +57,7 @@ export default function realStateLayout({
           <main>
             <div className="pt-6 px-4">
               <div className="w-full min-h-[calc(100vh-230px)]">
-                <div className="  bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8">
+                <div className="  bg-white  shadow rounded-lg p-4 sm:p-6 xl:p-8">
                   {children}
                 </div>
               </div>
@@ -175,7 +176,7 @@ export default function realStateLayout({
             </div>
           </footer>
           <p className="text-center text-sm text-gray-500 my-10">
-            &copy; 2019-{new Date().getFullYear()}{" "}
+            {/* &copy; 2019-{new Date().getFullYear()}{" "} */}
             <a href="#" className="hover:underline" target="_blank">
               Themesberg
             </a>

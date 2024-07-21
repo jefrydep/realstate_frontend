@@ -1,5 +1,10 @@
 import { Button } from "@/components/ui/button";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Progress } from "@/components/ui/progress";
 import {
   Card,
@@ -10,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Pencil } from "lucide-react";
 interface Props {
   title: string;
   description: string;
@@ -33,7 +39,21 @@ const ProjectItem = ({
   return (
     <Card className="w-full sm:w-[500px] m-2">
       <CardHeader>
-        <CardTitle className="text-primary 	 uppercase ">{title}</CardTitle>
+        <CardTitle className="text-primary flex justify-between items-center 	 ">
+          <span className=" uppercase ">{title}</span>{" "}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button className="p-2">
+                  <Pencil size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p> Editar Proyecto</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </CardTitle>
         <CardDescription className="">{description}</CardDescription>
         <Separator />
       </CardHeader>

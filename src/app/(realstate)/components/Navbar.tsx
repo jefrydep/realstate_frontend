@@ -1,3 +1,4 @@
+ 
 import { ModeToggle } from "@/components/togle-mode/ModeToggle";
 
 import { getServerSession } from "next-auth";
@@ -31,19 +32,11 @@ const Navbar = async () => {
           </div>
           <div className="flex items-center ">
             {/* User Avatar */}
-            <div>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger  >
-                <ModeToggle />
-                </TooltipTrigger>
-                <TooltipContent  >
-                  <p>Cambiar Tema</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            
-            </div>
+ 
+                  <ModeToggle />
+                
+            {/* <ModeToggle /> */}
+
             {/* <h5 className="mr-2">{dataUser?.user.name}</h5> */}
             <TooltipProvider>
               <Tooltip>
