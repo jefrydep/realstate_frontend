@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { CustomInput } from "@/components/ui/customInput/CustomInput";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Field, Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { LockKeyhole, User } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -125,6 +125,7 @@ export const LoginForm = () => {
               label={"contraseña"}
               placeholder="Ingresa tu contraseña"
             />
+            
             {/* <CustomInput type="text"  name="user"/> */}
             {/* <CustomInput type="text"  name="password"/> */}
             <div className="">

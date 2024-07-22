@@ -21,7 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DialogClose, DialogPortal } from "@radix-ui/react-dialog";
-import { Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import {
   AreaChart,
   Axis3DIcon,
@@ -38,7 +38,16 @@ import { useState } from "react";
 import { Description } from "@radix-ui/react-toast";
 import { createProject } from "../services/project";
 import { useRouter } from "next/navigation";
-
+import { toast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 const validationSchema = Yup.object().shape({
   nameProject: Yup.string()
 
@@ -47,7 +56,7 @@ const validationSchema = Yup.object().shape({
   location: Yup.string().required("Ubicación es requerido."),
   aream2: Yup.string().required("Area total requerido."),
   Description: Yup.string().optional(),
-  status: Yup.string().required("Campo requerido"),
+  status: Yup.string().required("Selecciona una opción"),
 });
 
 interface valuesLogin {
@@ -59,6 +68,7 @@ interface valuesLogin {
   status: string;
 }
 const CreateProjectForm = () => {
+  const [statusValue, setStatusValue] = useState<string>("");
   const router = useRouter();
 
   const onLogin = async (
@@ -74,6 +84,7 @@ const CreateProjectForm = () => {
         location,
         status,
       });
+
       router.refresh();
       setIsOpenDialog(false);
       console.log(createNewProject);
@@ -123,49 +134,41 @@ const CreateProjectForm = () => {
   };
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   return (
-    
-      <Dialog open={isOpenDialog} modal={true}>
-        {/* <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
-            <Plus />
-            </Button> */}
+    <Dialog open={isOpenDialog} modal={true}>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
+                <Plus onClick={() => setIsOpenDialog(true)} />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Agregar Proyectos</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Crear Proyecto</DialogTitle>
+          <DialogDescription>
+            Ingresa los datos del proyecto que se va a crear.
+          </DialogDescription>
+        </DialogHeader>
 
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DialogTrigger asChild>
-                {/* <div>
-                  
-                  </div> */}
-                <Button onClick={() => setIsOpenDialog(true)} className="ml-4">
-                  <Plus onClick={() => setIsOpenDialog(true)} />
-                </Button>
-              </DialogTrigger>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Agregar Proyectos</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Crear Proyecto</DialogTitle>
-            <DialogDescription>
-              Ingresa los datos del proyecto que se va a crear.
-            </DialogDescription>
-          </DialogHeader>
-
-          <Formik
-            initialValues={{
-              nameProject: "",
-              location: "",
-              aream2: "",
-              description: "",
-              status: "",
-            }}
-            onSubmit={onLogin}
-            className=""
-            validationSchema={validationSchema}
-          >
+        <Formik
+          initialValues={{
+            nameProject: "",
+            location: "",
+            aream2: "",
+            description: "",
+            status: "",
+          }}
+          onSubmit={onLogin}
+          validationSchema={validationSchema}
+        >
+          {({ values, setFieldValue }) => (
             <Form>
               <CustomInput
                 type="text"
@@ -195,59 +198,50 @@ const CreateProjectForm = () => {
                 label={"Descripción"}
                 placeholder="Puedes ingresar una breve descripción."
               />
-              <CustomInput
-                type="text"
+              <Field name="status">
+                {({}) => (
+                  <Select
+                    onValueChange={(value) => {
+                      setFieldValue("status", value);
+                    }}
+                  >
+                    <SelectTrigger className="w-[300px]">
+                      <SelectValue placeholder="Seleccione el estado del proyecto">
+                        {values.status || "Seleccione el estado del proyecto"}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Estados</SelectLabel>
+                        <SelectItem value="Pre Venta">Pre Venta</SelectItem>
+                        <SelectItem value="Post Venta">Post Venta</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              </Field>
+              <ErrorMessage
                 name="status"
-                icon={<LineChart />}
-                label={"Estado del proyecto"}
-                placeholder="Ingresa el estado del proyecto. "
+                component="div"
+                className="text-red-400  text-sm"
               />
-              {/* <CustomInput type="text"  name="user"/> */}
-              {/* <CustomInput type="text"  name="password"/> */}
-              {/* <div className="">
-              <Button
-                disabled={IsLoading}
-                type="submit"
-                className="w-full mt-7"
-              >
-                {!IsLoading ? (
-                  <span>Iniciar sesión</span>
-                ) : (
-                  <span>
-                    <SyncLoader size={10} color="white" />
-                  </span>
-                )}      
-              </Button>
-            </div> */}
-              <DialogFooter className="flex  gap-2">
+              <DialogFooter className="flex gap-2 mt-4">
                 <Button
                   type="reset"
                   variant={"destructive"}
-                  onClick={() => setIsOpenDialog(false)}
+                  onClick={() => {
+                    setIsOpenDialog(false);
+                  }}
                 >
                   Cancelar
                 </Button>
                 <Button type="submit">Guardar</Button>
               </DialogFooter>
             </Form>
-          </Formik>
-          {/* <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input id="name" value="Pedro Duarte" className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Username
-              </Label>
-              <Input id="username" value="@peduarte" className="col-span-3" />
-            </div>
-          </div> */}
-        </DialogContent>
-      </Dialog>
-    
+          )}
+        </Formik>
+      </DialogContent>
+    </Dialog>
   );
 };
 

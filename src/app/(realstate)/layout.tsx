@@ -1,4 +1,3 @@
- 
 import Link from "next/link";
 import { FaHouse } from "react-icons/fa6";
 import CustomLink from "./components/CustomLink";
@@ -18,8 +17,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Navbar from "./components/Navbar";
- 
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import SidebarMenu from "./components/SidebarMenu";
 export default function realStateLayout({
   children,
 }: {
@@ -27,43 +32,30 @@ export default function realStateLayout({
 }) {
   return (
     <>
-       <div>
-        <Navbar/>
-       </div>
-      <div className="flex overflow-hidden bg-primary-foreground pt-16">
-        <aside
-          id="sidebar"
-          className="fixed bg-red-500 hidden z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75"
-          aria-label="Sidebar"
-        >
-          <div className="relative flex-1 flex flex-col min-h-0 borderR border-gray-200 bg-primary-foreground pt-0">
-            <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-              <div className="flex-1 px-3 bg-primary-foreground divide-y space-y-1">
-                <ul className="space-y-2 pb-2   ">
-                  <CustomLink />
-                </ul>
-              </div>
-            </div>
-          </div>
-        </aside>
+      <div>
+        <Navbar />
+      </div>
+      <div className="flex bg-red-400  overflow-hidden bg-primary-foreground pt-16">
+        <SidebarMenu />
+
         <div
           className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10"
           id="sidebarBackdrop"
         ></div>
         <div
           id="main-content"
-          className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64"
+          className="h-full w-full bg-primary-foreground relative overflow-y-auto lg:ml-64"
         >
           <main>
-            <div className="pt-6 px-4">
+            <div className="">
               <div className="w-full min-h-[calc(100vh-230px)]">
-                <div className="  bg-white  shadow rounded-lg p-4 sm:p-6 xl:p-8">
+                <div className="  bg-white  dark:bg-primary-foreground  shadow rounded-lg p-4 sm:p-6 xl:p-8">
                   {children}
                 </div>
               </div>
             </div>
           </main>
-          <footer className="bg-white md:flex md:items-center md:justify-between shadow rounded-lg p-4 md:p-6 xl:p-8 my-6 mx-4">
+          {/* <footer className="bg-white md:flex md:items-center md:justify-between shadow rounded-lg p-4 md:p-6 xl:p-8 my-6 mx-4">
             <ul className="flex items-center flex-wrap mb-6 md:mb-0">
               <li>
                 <a
@@ -174,14 +166,14 @@ export default function realStateLayout({
                 </svg>
               </a>
             </div>
-          </footer>
-          <p className="text-center text-sm text-gray-500 my-10">
-            {/* &copy; 2019-{new Date().getFullYear()}{" "} */}
+          </footer> */}
+          {/* <p className="text-center text-sm text-gray-500 my-10">
+            &copy; 2019-{new Date().getFullYear()}{" "}
             <a href="#" className="hover:underline" target="_blank">
               Themesberg
             </a>
             . All rights reserved.
-          </p>
+          </p> */}
         </div>
       </div>
     </>

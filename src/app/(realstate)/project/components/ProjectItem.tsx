@@ -41,15 +41,32 @@ import {
 } from "@/components/ui/dialog";
 import { CustomInput } from "@/components/ui/customInput/CustomInput";
 import { useState } from "react";
-import { Form, Formik } from "formik";
-interface Props {
-  project: Project[];
-}
-
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import * as Yup from "yup";
 import { Project } from "../interface/Project";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { updateProject } from "../services/project";
 const validationSchema = Yup.object().shape({
   nameProject: Yup.string()
 
@@ -62,7 +79,8 @@ const validationSchema = Yup.object().shape({
 });
 const ProjectItem = (project: Project) => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const router = useRouter()
+  const [isOpenAlert, setIsOpenAlert] = useState(false);
+  const router = useRouter();
   // const [progress, setProgress] = React.useState(100)
 
   // React.useEffect(() => {
@@ -70,15 +88,49 @@ const ProjectItem = (project: Project) => {
   //   return () => clearTimeout(timer)
   // }, [])
   // console.log(title, description);
-  const onUpdate = () => {
-    console.log(project);
-    console.log("udpated");
-  };
-  const deleteProject = async (id:string)=>{
-   
-    await axios.delete(`http://localhost:3000/api/project/${id}`)
-    router.refresh()
+  interface valuesUpdate {
+    nameProject: string;
+    aream2: string;
+    description: string;
+    location: string;
+    status: string;
   }
+
+  const onUpdate = async (
+    { nameProject, location, aream2, description, status }: valuesUpdate,
+    actions: FormikHelpers<valuesUpdate>
+  ) => {
+    // Comparar valores actuales con valores originales
+    if (
+      nameProject !== project.nameProject ||
+      location !== project.location ||
+      aream2 !== project.aream2 ||
+      description !== project.description ||
+      status !== project.status
+    ) {
+      try {
+        const res = await updateProject(
+          { nameProject, location, aream2, description, status },
+          project.id
+        );
+        console.log(nameProject, aream2, description, status);
+        setIsOpenDialog(false);
+        router.refresh();
+
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      return;
+    }
+    actions.resetForm();
+  };
+
+  const deleteProject = async (id: string) => {
+    await axios.delete(`http://localhost:3000/api/project/${id}`);
+    router.refresh();
+  };
   return (
     <>
       <Card className="w-full sm:w-[500px] m-2">
@@ -111,7 +163,7 @@ const ProjectItem = (project: Project) => {
                   </div> */}
 
                         <Button
-                          onClick={()=> setIsOpenDialog(true) }
+                          onClick={() => setIsOpenDialog(true)}
                           className="ml-4 p-2"
                         >
                           <Pencil size={18} />
@@ -123,28 +175,60 @@ const ProjectItem = (project: Project) => {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <DialogTrigger asChild>
+                <AlertDialog open={isOpenAlert} onOpenChange={setIsOpenAlert}>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant={"destructive"}
+                            // onClick={() => deleteProject(project.id)}
+                            onClick={() => setIsOpenAlert(true)}
+                            className="ml-4 p-2"
+                          >
+                            <Trash size={18} />
+                          </Button>
+                        </AlertDialogTrigger>
                         {/* <div>
                   
                   </div> */}
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Eliminar Proyecto</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
 
-                        <Button
-                          variant={"destructive"}
-                          onClick={()=> deleteProject(project.id)}
-                          className="ml-4 p-2"
-                        >
-                          <Trash size={18} />
-                        </Button>
-                      </DialogTrigger>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Eliminar Proyecto</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        {" "}
+                        ¿Estás seguro de que deseas eliminar este proyecto?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Esta acción no podrá ser revertida.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <Button
+                        onClick={() => setIsOpenAlert(false)}
+                        type="button"
+                        variant={"destructive"}
+                      >
+                        Cancelar
+                      </Button>
+
+                      <AlertDialogAction
+                        onClick={async () => {
+                          deleteProject(project.id);
+                          setIsOpenDialog(false);
+                        }}
+                      >
+                        Eliminar
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -166,85 +250,82 @@ const ProjectItem = (project: Project) => {
                   className=""
                   validationSchema={validationSchema}
                 >
-                  <Form>
-                    <CustomInput
-                      type="text"
-                      name="nameProject"
-                      icon={<LandPlot />}
-                      label={"Nombre del proyecto"}
-                      placeholder="Ingresa el nombre del proyecto."
-                    />
-                    <CustomInput
-                      type="text"
-                      name="location"
-                      icon={<LocateFixed />}
-                      label={"Ubicación"}
-                      placeholder="Ingresa la ubicación del proyecto."
-                    />
-                    <CustomInput
-                      type="text"
-                      name="aream2"
-                      icon={<AreaChart />}
-                      label={"Area total"}
-                      placeholder="Ingresa el area total del proyecto."
-                    />
-                    <CustomInput
-                      type="text"
-                      name="description"
-                      icon={<Captions />}
-                      label={"Descripción"}
-                      placeholder="Puedes ingresar una breve descripción."
-                    />
-                    <CustomInput
-                      type="text"
-                      name="status"
-                      icon={<LineChart />}
-                      label={"Estado del proyecto"}
-                      placeholder="Ingresa el estado del proyecto. "
-                    />
-                    {/* <CustomInput type="text"  name="user"/> */}
-                    {/* <CustomInput type="text"  name="password"/> */}
-                    {/* <div className="">
-              <Button
-                disabled={IsLoading}
-                type="submit"
-                className="w-full mt-7"
-              >
-                {!IsLoading ? (
-                  <span>Iniciar sesión</span>
-                ) : (
-                  <span>
-                    <SyncLoader size={10} color="white" />
-                  </span>
-                )}      
-              </Button>
-            </div> */}
-                    <DialogFooter className="flex  gap-2">
-                      <Button
-                        type="reset"
-                        variant={"destructive"}
-                        onClick={() => setIsOpenDialog(false)}
-                      >
-                        Cancelar
-                      </Button>
-                      <Button type="submit">Guardar</Button>
-                    </DialogFooter>
-                  </Form>
+                  {({ values, setFieldValue }) => (
+                    <Form>
+                      <CustomInput
+                        type="text"
+                        name="nameProject"
+                        icon={<LandPlot />}
+                        label={"Nombre del proyecto"}
+                        placeholder="Ingresa el nombre del proyecto."
+                      />
+                      <CustomInput
+                        type="text"
+                        name="location"
+                        icon={<LocateFixed />}
+                        label={"Ubicación"}
+                        placeholder="Ingresa la ubicación del proyecto."
+                      />
+                      <CustomInput
+                        type="text"
+                        name="aream2"
+                        icon={<AreaChart />}
+                        label={"Area total"}
+                        placeholder="Ingresa el area total del proyecto."
+                      />
+                      <CustomInput
+                        type="text"
+                        name="description"
+                        icon={<Captions />}
+                        label={"Descripción"}
+                        placeholder="Puedes ingresar una breve descripción."
+                      />
+                      <Field name="status">
+                        {({}) => (
+                          <Select
+                            onValueChange={(value) => {
+                              setFieldValue("status", value);
+                            }}
+                            value={values.status}
+                          >
+                            <SelectTrigger className="w-[300px]">
+                              <SelectValue placeholder="Seleccione el estado del proyecto">
+                                {values.status ||
+                                  "Seleccione el estado del proyecto"}
+                              </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectLabel>Estados</SelectLabel>
+                                <SelectItem value="Pre Venta">
+                                  Pre Venta
+                                </SelectItem>
+                                <SelectItem value="Post Venta">
+                                  Post Venta
+                                </SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </Field>
+                      <ErrorMessage
+                        name="status"
+                        component="div"
+                        className="text-red-400  text-sm"
+                      />
+                      <DialogFooter className="flex gap-2 mt-4">
+                        <Button
+                          type="reset"
+                          variant={"destructive"}
+                          onClick={() => setIsOpenDialog(false)}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button type="submit">Guardar</Button>
+                      </DialogFooter>
+                    </Form>
+                  )}
                 </Formik>
-                {/* <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input id="name" value="Pedro Duarte" className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Username
-              </Label>
-              <Input id="username" value="@peduarte" className="col-span-3" />
-            </div>
-          </div> */}
               </DialogContent>
             </Dialog>
           </CardTitle>
@@ -254,18 +335,30 @@ const ProjectItem = (project: Project) => {
         <CardContent>
           <div className="flex justify-between">
             <span className="mr-7">Total de Lotes:</span>
-            {/* <b>{totalLots}</b> */}
+            <b>{project.totalLots}</b>
           </div>
           <div className="flex justify-between">
             <span className="mr-7"> Lotes Disponibles:</span>
-            {/* <b>{availableLots}</b> */}
+            <b>{project.availableLots}</b>
           </div>
           <div className="flex justify-between">
             <span className="mr-7"> Lotes Vendidos:</span>
-            {/* <b>{soldLots} </b> */}
+            <b>{project.soldLots} </b>
+          </div>
+          <div className={`flex justify-between    text-white rounded-md px-1`}>
+            <span className="mr-7">Estado</span>
+            <b
+              className={`${
+                project.status === "Post Venta"
+                  ? "bg-[#7dd3fc]"
+                  : "bg-yellow-400"
+              } px-2 rounded-xl`}
+            >
+              {project.status} 
+            </b>
           </div>
           <div className="mt-6">
-            {/* <Progress value={soldLots} className="w-[100%]" /> */}
+            <Progress value={(project.soldLots * 100) / project.totalLots} className="w-[100%]" />
           </div>
         </CardContent>
         <Separator />
