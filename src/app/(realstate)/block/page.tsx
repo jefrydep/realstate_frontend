@@ -8,7 +8,7 @@ export default function BlockPage() {
   const data: any = [];
   return (
     <ContentLayout title="Manzanas">
-      <div className="flex mb-3  justify-between items-center justify-items-center  content-center ">
+      <div className="flex mb-3  after:justify-between items-center justify-items-center  content-center ">
         <h4 className="  font-bold">Listado de manzanas</h4>
         <Button>+</Button>
       </div>
