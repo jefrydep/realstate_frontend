@@ -68,7 +68,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { updateProject } from "../services/project";
 import { useIdProjectStore } from "@/store/idProject/idProject.store";
-import { useSession } from "next-auth/react";
 const validationSchema = Yup.object().shape({
   nameProject: Yup.string()
 
@@ -85,8 +84,7 @@ const ProjectItem = (project: Project) => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const setIdProject = useIdProjectStore((state) => state.setIdProject);
   const setNameProject = useIdProjectStore((state) => state.setNameProject);
-  const { data: session } = useSession();
-
+  
   // const [progress, setProgress] = React.useState(100)
 
   // React.useEffect(() => {
@@ -119,7 +117,6 @@ const ProjectItem = (project: Project) => {
         const res = await updateProject(
           { nameProject, location, aream2, description, status },
           project.id,
-          session?.user.token
         );
 
         console.log(nameProject, aream2, description, status);

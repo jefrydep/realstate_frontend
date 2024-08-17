@@ -26,19 +26,10 @@ export const createProject = async (
 };
 export const updateProject = async (
   updateProject: CreateProject,
-  id: string,
-  token: string
+  id: string
 ) => {
-  const res = await axios.patch(
-    `http://localhost:3000/api/project/${id}`,
-    {
-      ...updateProject,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await axios.patch(`http://localhost:3000/api/project/${id}`, {
+    ...updateProject,
+  });
   return res;
 };

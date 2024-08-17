@@ -5,11 +5,9 @@ import { blockColumn } from "./BlockColumns";
 import { useIdProjectStore } from "@/store/idProject/idProject.store";
 import axios from "axios";
 import { Block } from "../interfaces/block";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 export default function BlockGrid() {
-  const { data: session } = useSession();
-  console.log(session);
   const idProject = useIdProjectStore((state) => state.idProject);
   const blockAdded = useIdProjectStore((state) => state.blockAdded);
   const setBlockAdded = useIdProjectStore((state) => state.setBlockAdded);

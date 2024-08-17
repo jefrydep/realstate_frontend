@@ -118,8 +118,7 @@ const ProjectItem = (project: Project) => {
       try {
         const res = await updateProject(
           { nameProject, location, aream2, description, status },
-          project.id,
-          session?.user.token
+          project.id
         );
 
         console.log(nameProject, aream2, description, status);

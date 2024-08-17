@@ -85,8 +85,7 @@ const ProjectItem = (project: Project) => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const setIdProject = useIdProjectStore((state) => state.setIdProject);
   const setNameProject = useIdProjectStore((state) => state.setNameProject);
-  const { data: session } = useSession();
-
+  const { data: session, status } = useSession();
   // const [progress, setProgress] = React.useState(100)
 
   // React.useEffect(() => {
@@ -119,7 +118,7 @@ const ProjectItem = (project: Project) => {
         const res = await updateProject(
           { nameProject, location, aream2, description, status },
           project.id,
-          session?.user.token
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhjZDc5ZTQzLTFiZWUtNGUxMy1hMDZiLWFjYzUxMjMwYzQ2OCIsImlhdCI6MTcyMzMzNDAzMiwiZXhwIjoxNzIzMzQxMjMyfQ.qUx_ApMd6aDcC11sw9noZH4D8PvwASWclW4GgWrnLZY"
         );
 
         console.log(nameProject, aream2, description, status);

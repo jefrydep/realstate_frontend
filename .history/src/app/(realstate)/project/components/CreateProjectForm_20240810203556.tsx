@@ -79,22 +79,20 @@ const CreateProjectForm = () => {
   ) => {
     console.log(nameProject, location, aream2, description, status);
     try {
-      if (session) {
-        const createNewProject = await createProject(
-          {
-            nameProject,
-            aream2,
-            description,
-            location,
-            status,
-          },
-          session?.user.token
-        );
-      }
+      const createNewProject = await createProject(
+        {
+          nameProject,
+          aream2,
+          description,
+          location,
+          status,
+        },
+        token
+      );
 
       router.refresh();
       setIsOpenDialog(false);
-      // console.log(createNewProject);
+      console.log(createNewProject);
     } catch (error) {
       console.log(error);
     }

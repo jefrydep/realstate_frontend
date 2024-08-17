@@ -94,7 +94,7 @@ const CreateProjectForm = () => {
 
       router.refresh();
       setIsOpenDialog(false);
-      // console.log(createNewProject);
+      console.log(createNewProject);
     } catch (error) {
       console.log(error);
     }

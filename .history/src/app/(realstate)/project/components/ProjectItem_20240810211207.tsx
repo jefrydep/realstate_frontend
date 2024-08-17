@@ -85,8 +85,9 @@ const ProjectItem = (project: Project) => {
   const [isOpenAlert, setIsOpenAlert] = useState(false);
   const setIdProject = useIdProjectStore((state) => state.setIdProject);
   const setNameProject = useIdProjectStore((state) => state.setNameProject);
-  const { data: session } = useSession();
-
+  const { data: session, status } = useSession();
+  let token = session?.user.token;
+  console.log(session?.user.token);
   // const [progress, setProgress] = React.useState(100)
 
   // React.useEffect(() => {
@@ -116,17 +117,16 @@ const ProjectItem = (project: Project) => {
       status !== project.status
     ) {
       try {
-        const res = await updateProject(
-          { nameProject, location, aream2, description, status },
-          project.id,
-          session?.user.token
-        );
+        if (session?.user) {
+          const res = await updateProject(
+            { nameProject, location, aream2, description, status },
+            project.id,
+            token
+          );
+        }
 
-        console.log(nameProject, aream2, description, status);
         setIsOpenDialog(false);
         router.refresh();
-
-        return res;
       } catch (error) {
         console.log(error);
       }

@@ -28,9 +28,11 @@ export default async function ProjectPage() {
   const data = await getData();
 
   return (
-    <ContentLayout>
-      <CreateProjectForm />
-      <ProjectGrid projects={data} />
+    <ContentLayout >
+      
+        <CreateProjectForm />
+        <ProjectGrid projects={data} />
+     
     </ContentLayout>
   );
 }

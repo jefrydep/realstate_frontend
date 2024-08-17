@@ -34,11 +34,11 @@ export const updateProject = async (
     {
       ...updateProject,
     },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    // {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // }
   );
   return res;
 };

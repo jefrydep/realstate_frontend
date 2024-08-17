@@ -48,7 +48,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getSession, useSession } from "next-auth/react";
 const validationSchema = Yup.object().shape({
   nameProject: Yup.string()
 
@@ -71,7 +70,6 @@ interface valuesLogin {
 const CreateProjectForm = () => {
   const [statusValue, setStatusValue] = useState<string>("");
   const router = useRouter();
-  const { data: session, status } = useSession();
 
   const onLogin = async (
     { nameProject, location, aream2, description, status }: valuesLogin,
@@ -79,22 +77,17 @@ const CreateProjectForm = () => {
   ) => {
     console.log(nameProject, location, aream2, description, status);
     try {
-      if (session) {
-        const createNewProject = await createProject(
-          {
-            nameProject,
-            aream2,
-            description,
-            location,
-            status,
-          },
-          session?.user.token
-        );
-      }
+      const createNewProject = await createProject({
+        nameProject,
+        aream2,
+        description,
+        location,
+        status,
+      });
 
       router.refresh();
       setIsOpenDialog(false);
-      // console.log(createNewProject);
+      console.log(createNewProject);
     } catch (error) {
       console.log(error);
     }
